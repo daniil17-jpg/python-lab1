@@ -1,0 +1,5 @@
+text.txt
+fr
+translator_pkg.module1
+screen
+4

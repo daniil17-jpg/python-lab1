@@ -1,0 +1,49 @@
+import googletrans
+from googletrans import Translator
+
+translator = Translator()
+
+def CodeLang(lang: str) -> str:
+    lang_clean = lang.lower().strip()
+    LANGUAGES = googletrans.LANGUAGES
+
+    if lang_clean in LANGUAGES:
+        return LANGUAGES[lang_clean].capitalize()
+
+    for code, name in LANGUAGES.items():
+        if name.lower() == lang_clean:
+            return code
+
+    return "Error: Language not found"
+
+
+def TransLate(str_text: str, lang: str) -> str:
+    try:
+        target_lang = CodeLang(lang)
+        if target_lang.startswith("Error"):
+            target_code = lang
+        else:
+            target_code = lang if lang.lower() in googletrans.LANGUAGES else target_lang
+
+        translated = translator.translate(str_text, dest=target_code)
+        return translated.text
+    except Exception as e:
+        return f"Error: {e}"
+
+
+def LangDetect(txt: str) -> str:
+    try:
+        detection = translator.detect(txt)
+        return f"Detected(lang={detection.lang}, confidence={detection.confidence})"
+    except Exception as e:
+        return f"Error: {e}"
+
+
+if __name__ == "__main__":
+    txt = "Доброго дня. Як справи?"
+    lang = "en"
+
+    print(txt)
+    print(LangDetect(txt))
+    print(TransLate(txt, lang))
+    print(CodeLang(lang))
